@@ -191,9 +191,9 @@ public class KeyHandler implements DeviceKeyHandler {
                 Context.MODE_PRIVATE | Context.MODE_MULTI_PROCESS);
     }
 
-    public boolean handleKeyEvent(KeyEvent event) {
+    public KeyEvent handleKeyEvent(KeyEvent event) {
         if (event.getAction() != KeyEvent.ACTION_UP) {
-            return false;
+            return event;
         }
         int scanCode = event.getScanCode();
         boolean isKeySupported = ArrayUtils.contains(sSupportedGestures, scanCode);
@@ -216,7 +216,7 @@ public class KeyHandler implements DeviceKeyHandler {
             doHandleSliderAction(0);
                     }
                 }, 250);
-            return true;
+            return event;
         case KEYCODE_SLIDER_MIDDLE:
             mCurrentPosition = KEYCODE_SLIDER_MIDDLE; 
            Log.i(TAG, "KEYCODE_SLIDER_MIDDLE");
@@ -227,7 +227,7 @@ public class KeyHandler implements DeviceKeyHandler {
             doHandleSliderAction(1);
                     }
                 }, 50);
-            return true;
+            return event;
         case KEYCODE_SLIDER_BOTTOM:
             mCurrentPosition = KEYCODE_SLIDER_BOTTOM; 
            Log.i(TAG, "KEYCODE_SLIDER_BOTTOM");
@@ -238,15 +238,15 @@ public class KeyHandler implements DeviceKeyHandler {
             doHandleSliderAction(2);
                     }
                 }, 50);
-            return true;
-    }
+            return event;
+        }
             mEventHandler.removeMessages(GESTURE_REQUEST);
             mEventHandler.sendMessage(msg);
         } else {
             mEventHandler.sendMessage(msg);
          }
      }
-     return isKeySupported;
+     return event;
   }
 
     private Message getMessageForKeyEvent(KeyEvent keyEvent) {
