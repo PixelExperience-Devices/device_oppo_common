@@ -21,10 +21,14 @@
 
     <!-- The list absolute paths of jar/apk files containing the device specific handlers,
          delimited by File.pathSeparator, which defaults to ":" on Android -->
-    <string name="config_deviceKeyHandlerLib" translatable="false">/system/app/DeviceHandler/DeviceHandler.apk</string>
+    <string-array name="config_deviceKeyHandlerLib" translatable="false">
+        <item>/system/app/DeviceHandler/DeviceHandler.apk</item>
+    </string-array>
 
     <!-- Full qualified name of the class that implements
          com.android.internal.os.DeviceKeyHandler interface. -->
-    <string name="config_deviceKeyHandlerClass" translatable="false">com.slim.device.KeyHandler</string>
+    <string-array name="config_deviceKeyHandlerClass" translatable="false">
+        <item>com.slim.device.KeyHandler</item>
+    </string-array>
 
 </resources>
