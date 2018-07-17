@@ -32,17 +32,18 @@ import android.os.PowerManager.WakeLock;
 import android.os.SystemProperties;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.provider.Settings.Global;
 import android.util.Log;
 import android.view.KeyEvent;
-
+import android.view.WindowManagerGlobal;
 import android.service.notification.ZenModeConfig;
 
 import com.slim.device.settings.ScreenOffGesture;
 
 import com.android.internal.os.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
-import com.android.internal.util.gzosp.ActionConstants;
-import com.android.internal.util.gzosp.Action;
+import com.android.internal.util.aospextended.ActionConstants;
+import com.android.internal.util.aospextended.Action;
 
 public class KeyHandler implements DeviceKeyHandler {
 
@@ -82,7 +83,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private final Context mContext;
     private final AudioManager mAudioManager;
     private final PowerManager mPowerManager;
-    private final NotificationManager mNotificationManager;
+    private final NotificationManager mNoMan;
     private Context mGestureContext = null;
     private EventHandler mEventHandler;
     private SensorManager mSensorManager;
@@ -95,8 +96,7 @@ public class KeyHandler implements DeviceKeyHandler {
         mEventHandler = new EventHandler();
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        mNotificationManager
-                = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNoMan = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
@@ -157,24 +157,25 @@ public class KeyHandler implements DeviceKeyHandler {
                         doHapticFeedback();
                 break;
             case MODE_TOTAL_SILENCE:
-                setZenMode(Settings.Global.ZEN_MODE_NO_INTERRUPTIONS);
+		mNoMan.setZenMode(Global.ZEN_MODE_NO_INTERRUPTIONS, null, TAG);
                 break;
             case MODE_ALARMS_ONLY:
-                setZenMode(Settings.Global.ZEN_MODE_ALARMS);
+		mNoMan.setZenMode(Global.ZEN_MODE_ALARMS, null, TAG);
                 break;
             case MODE_PRIORITY_ONLY:
-                setZenMode(Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
-                setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+		mNoMan.setZenMode(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
                 break;
             case MODE_NONE:
-                setZenMode(Settings.Global.ZEN_MODE_OFF);
-                setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
                 break;
             case MODE_VIBRATE:
-                setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
+            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
                 break;
             case MODE_RING:
-                setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
                 break;
             }
 
@@ -186,20 +187,6 @@ public class KeyHandler implements DeviceKeyHandler {
                 Action.processAction(mContext, ActionConstants.ACTION_WAKE_DEVICE, false);
             }
             Action.processAction(mContext, action, false);
-        }
-    }
-
-    private void setZenMode(int mode) {
-        mNotificationManager.setZenMode(mode, null, TAG);
-        if (mVibrator != null) {
-            mVibrator.vibrate(50);
-        }
-    }
-
-    private void setRingerModeInternal(int mode) {
-        mAudioManager.setRingerModeInternal(mode);
-        if (mVibrator != null) {
-            mVibrator.vibrate(50);
         }
     }
 

@@ -37,10 +37,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.android.internal.util.gzosp.AppHelper;
-import com.android.internal.util.gzosp.ActionConstants;
-import com.android.internal.util.gzosp.DeviceUtils;
-import com.android.internal.util.gzosp.DeviceUtils.FilteredDeviceFeaturesArray;
+import com.android.internal.util.aospextended.AppHelper;
+import com.android.internal.util.aospextended.ActionConstants;
+import com.android.internal.util.aospextended.DeviceUtils;
+import com.android.internal.util.aospextended.DeviceUtils.FilteredDeviceFeaturesArray;
 
 import com.slim.device.KernelControl;
 import com.slim.device.R;
