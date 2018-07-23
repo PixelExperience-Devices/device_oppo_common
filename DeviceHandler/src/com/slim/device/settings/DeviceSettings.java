@@ -27,7 +27,7 @@ import com.slim.device.KernelControl;
 import com.slim.device.R;
 import com.slim.device.util.FileUtils;
 
-public class SliderSettings extends PreferenceActivity
+public class DeviceSettings extends PreferenceActivity
         implements OnPreferenceChangeListener {
 
     private SwitchPreference mSliderSwap;
@@ -38,7 +38,7 @@ public class SliderSettings extends PreferenceActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.slider_panel);
+        addPreferencesFromResource(R.xml.main);
 
         mSliderSwap = (SwitchPreference) findPreference("button_swap");
         mSliderSwap.setOnPreferenceChangeListener(this);

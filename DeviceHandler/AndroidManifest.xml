@@ -37,9 +37,9 @@
         </activity>
 
         <activity
-            android:name=".settings.SliderSettings"
+            android:name=".settings.DeviceSettings"
             android:theme="@style/DeviceHandlerTheme"
-            android:label="@string/notification_slider">
+            android:label="@string/device_settings">
             <intent-filter>
                 <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
             </intent-filter>

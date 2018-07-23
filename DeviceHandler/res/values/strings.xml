@@ -16,6 +16,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- General strings -->
+
+    <string name="device_settings">Device Settings</string>
     <string name="dlg_ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="reset">Reset</string>
