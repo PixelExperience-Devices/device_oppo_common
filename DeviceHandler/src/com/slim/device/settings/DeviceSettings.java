@@ -23,6 +23,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.SwitchPreference;
 import com.slim.device.SRGBModeSwitch;
+import com.slim.device.DCIModeSwitch;
 import android.preference.TwoStatePreference;
 import com.slim.device.KernelControl;
 import com.slim.device.R;
@@ -32,13 +33,17 @@ public class DeviceSettings extends PreferenceActivity
         implements OnPreferenceChangeListener {
 
     public static final String KEY_SRGB_SWITCH = "srgb";
+    public static final String KEY_DCI_SWITCH = "dci";
+    private static final String KEY_CATEGORY_GRAPHICS = "graphics";
+
     private SwitchPreference mSliderSwap;
     private ListPreference mSliderTop;
     private ListPreference mSliderMiddle;
     private ListPreference mSliderBottom;
     private TwoStatePreference mSRGBModeSwitch;
+    private TwoStatePreference mDCIModeSwitch;
 
-    @Override
+@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.main);
@@ -59,6 +64,12 @@ public class DeviceSettings extends PreferenceActivity
         mSRGBModeSwitch.setEnabled(SRGBModeSwitch.isSupported());
         mSRGBModeSwitch.setChecked(SRGBModeSwitch.isCurrentlyEnabled(this));
         mSRGBModeSwitch.setOnPreferenceChangeListener(new SRGBModeSwitch());
+
+        mDCIModeSwitch = (TwoStatePreference) findPreference(KEY_DCI_SWITCH);
+        mDCIModeSwitch.setEnabled(DCIModeSwitch.isSupported());
+        mDCIModeSwitch.setChecked(DCIModeSwitch.isCurrentlyEnabled(this));
+        mDCIModeSwitch.setOnPreferenceChangeListener(new DCIModeSwitch());
+
 
     }
 

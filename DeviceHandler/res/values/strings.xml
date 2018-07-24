@@ -60,4 +60,7 @@
 	<string name="graphics_title">Graphics</string> 
 	<string name="srgb_mode_summary"></string>
 	<string name="srgb_mode_title">sRGB mode</string>
+        <string name="dci_mode_summary"></string>
+        <string name="dci_mode_title">Wide color gammut mode</string>
+
 </resources>

@@ -48,12 +48,17 @@
     </PreferenceCategory>
 
      <PreferenceCategory 
+            android:key="graphics"
             android:title="@string/graphics_title">  
                    <CheckBoxPreference 
             android:key="srgb" 
             android:summary="@string/srgb_mode_summary" 
             android:title="@string/srgb_mode_title" 
             android:persistent="false" />
+        <CheckBoxPreference
+            android:key="dci"
+            android:summary="@string/dci_mode_summary"
+            android:title="@string/dci_mode_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>
