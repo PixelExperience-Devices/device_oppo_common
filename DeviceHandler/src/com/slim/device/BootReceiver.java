@@ -23,18 +23,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
-
+import android.content.SharedPreferences;
 import com.slim.device.KernelControl;
 import com.slim.device.settings.ScreenOffGesture;
 import com.slim.device.settings.DeviceSettings;
 import com.slim.device.util.FileUtils;
-
+import com.slim.device.Utils;
 import java.io.File;
 
-
 public class BootReceiver extends BroadcastReceiver {
+
+
+private void restore(String file, boolean enabled) {
+        if (file == null) {
+            return;
+        }
+if (enabled) {
+            Utils.writeValue(file, "1");
+        }
+    }
+
+private void restore(String file, String value) {
+        if (file == null) {
+            return;
+        }
+      Utils.writeValue(file, value);
+  }
+
+
     @Override
-    public void onReceive(final Context context, final Intent intent) {
+       public void onReceive(final Context context, final Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
                 enableComponent(context, ScreenOffGesture.class.getName());
                 SharedPreferences screenOffGestureSharedPreferences = context.getSharedPreferences(
@@ -60,6 +78,10 @@ public class BootReceiver extends BroadcastReceiver {
                 FileUtils.writeLine(KernelControl.KEYCODE_SLIDER_BOTTOM, sliderBottom);
                 FileUtils.writeLine(KernelControl.SLIDER_SWAP_NODE, sliderSwap ? "1" : "0");
             }
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_SRGB_SWITCH, false);
+        restore(SRGBModeSwitch.getFile(), enabled);
+
     }
 
     private String getPreferenceString(Context context, String key, String defaultValue) {

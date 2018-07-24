@@ -22,7 +22,8 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.SwitchPreference;
-
+import com.slim.device.SRGBModeSwitch;
+import android.preference.TwoStatePreference;
 import com.slim.device.KernelControl;
 import com.slim.device.R;
 import com.slim.device.util.FileUtils;
@@ -30,10 +31,12 @@ import com.slim.device.util.FileUtils;
 public class DeviceSettings extends PreferenceActivity
         implements OnPreferenceChangeListener {
 
+    public static final String KEY_SRGB_SWITCH = "srgb";
     private SwitchPreference mSliderSwap;
     private ListPreference mSliderTop;
     private ListPreference mSliderMiddle;
     private ListPreference mSliderBottom;
+    private TwoStatePreference mSRGBModeSwitch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,12 @@ public class DeviceSettings extends PreferenceActivity
 
         mSliderBottom = (ListPreference) findPreference("keycode_bottom_position");
         mSliderBottom.setOnPreferenceChangeListener(this);
+
+        mSRGBModeSwitch = (TwoStatePreference) findPreference(KEY_SRGB_SWITCH);
+        mSRGBModeSwitch.setEnabled(SRGBModeSwitch.isSupported());
+        mSRGBModeSwitch.setChecked(SRGBModeSwitch.isCurrentlyEnabled(this));
+        mSRGBModeSwitch.setOnPreferenceChangeListener(new SRGBModeSwitch());
+
     }
 
     private void setSummary(ListPreference preference, String file) {
