@@ -35,6 +35,10 @@ public class DeviceSettings extends PreferenceActivity
     public static final String KEY_SRGB_SWITCH = "srgb";
     public static final String KEY_DCI_SWITCH = "dci";
     private static final String KEY_CATEGORY_GRAPHICS = "graphics";
+    public static final String SLIDER_SWAP_NODE = "/proc/s1302/key_rep";
+    public static final String KEYCODE_SLIDER_TOP = "/proc/tri-state-key/keyCode_top";
+    public static final String KEYCODE_SLIDER_MIDDLE = "/proc/tri-state-key/keyCode_middle";
+    public static final String KEYCODE_SLIDER_BOTTOM = "/proc/tri-state-key/keyCode_bottom";
 
     private SwitchPreference mSliderSwap;
     private ListPreference mSliderTop;
@@ -85,11 +89,11 @@ public class DeviceSettings extends PreferenceActivity
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         final String file;
         if (preference == mSliderTop) {
-            file = KernelControl.KEYCODE_SLIDER_TOP;
+            file = KEYCODE_SLIDER_TOP;
         } else if (preference == mSliderMiddle) {
-            file = KernelControl.KEYCODE_SLIDER_MIDDLE;
+            file = KEYCODE_SLIDER_MIDDLE;
         } else if (preference == mSliderBottom) {
-            file = KernelControl.KEYCODE_SLIDER_BOTTOM;
+            file = KEYCODE_SLIDER_BOTTOM;
         } else if (preference == mSliderSwap) {
             Boolean value = (Boolean) newValue;
             FileUtils.writeLine(KernelControl.SLIDER_SWAP_NODE, value ? "1" : "0");
@@ -111,8 +115,8 @@ public class DeviceSettings extends PreferenceActivity
         // Remove padding around the listview
             getListView().setPadding(0, 0, 0, 0);
 
-        setSummary(mSliderTop, KernelControl.KEYCODE_SLIDER_TOP);
-        setSummary(mSliderMiddle, KernelControl.KEYCODE_SLIDER_MIDDLE);
-        setSummary(mSliderBottom, KernelControl.KEYCODE_SLIDER_BOTTOM);
+        setSummary(mSliderTop, KEYCODE_SLIDER_TOP);
+        setSummary(mSliderMiddle, KEYCODE_SLIDER_MIDDLE);
+        setSummary(mSliderBottom, KEYCODE_SLIDER_BOTTOM);
     }
 }
