@@ -10,8 +10,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-sdk
-            android:minSdkVersion="18"
-            android:targetSdkVersion="19" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="21" />
 
     <application
             android:icon="@android:drawable/sym_def_app_icon"
@@ -36,10 +36,11 @@
                 android:value="com.android.settings.category.ia.homepage" />
         </activity>
 
-        <activity
-            android:name=".settings.DeviceSettings"
-            android:theme="@style/DeviceHandlerTheme"
-            android:label="@string/device_settings">
+         <activity
+            android:name=".settings.DeviceSettingsActivity"
+            android:theme="@style/AppTheme"
+            android:label="@string/device_settings"
+            android:launchMode="singleTask" >  
             <intent-filter>
                 <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
             </intent-filter>
@@ -50,6 +51,15 @@
                 android:name="com.android.settings.category"
                 android:value="com.android.settings.category.ia.homepage" />
         </activity>
+
+        <activity-alias
+            android:name=".settings.DeviceSettings"
+            android:label="@string/device_settings"
+            android:targetActivity=".settings.DeviceSettingsActivity" >
+            <intent-filter>
+                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+            </intent-filter>
+        </activity-alias>
 
         <receiver android:name=".BootReceiver" >
           <intent-filter>

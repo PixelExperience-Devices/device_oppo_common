@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import com.slim.device.KernelControl;
 import com.slim.device.settings.ScreenOffGesture;
@@ -30,6 +29,7 @@ import com.slim.device.settings.DeviceSettings;
 import com.slim.device.util.FileUtils;
 import com.slim.device.Utils;
 import java.io.File;
+import android.support.v7.preference.PreferenceManager;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -66,7 +66,7 @@ private void restore(String file, String value) {
                 enableComponent(context, DeviceSettings.class.getName());
                 boolean sliderSwap = getPreferenceBoolean(context, "button_swap", false);
                 FileUtils.writeLine(KernelControl.SLIDER_SWAP_NODE, sliderSwap ? "1" : "0");
-    
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean enabled = sharedPrefs.getBoolean(DeviceSettings.KEY_SRGB_SWITCH, false);
         restore(SRGBModeSwitch.getFile(), enabled);

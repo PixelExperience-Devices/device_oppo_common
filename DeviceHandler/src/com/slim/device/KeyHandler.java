@@ -37,9 +37,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManagerGlobal;
 import android.service.notification.ZenModeConfig;
-
+import com.slim.device.settings.DeviceSettings;
 import com.slim.device.settings.ScreenOffGesture;
-
+import android.os.UserHandle;
 import com.android.internal.os.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.aospextended.ActionConstants;
@@ -49,6 +49,9 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
     private static final int GESTURE_REQUEST = 1;
+    private static final int GESTURE_WAKELOCK_DURATION = 2000;
+    private static final boolean DEBUG = true;
+
 
     // Supported scancodes
     private static final int GESTURE_CIRCLE_SCANCODE = 250;
@@ -58,12 +61,9 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_GTR_SCANCODE = 254;
     private static final int GESTURE_V_UP_SCANCODE = 255;
     // Slider
-    private static final int MODE_TOTAL_SILENCE = 600;
-    private static final int MODE_ALARMS_ONLY = 601;
-    private static final int MODE_PRIORITY_ONLY = 602;
-    private static final int MODE_NONE = 603;
-    private static final int MODE_VIBRATE = 604;
-    private static final int MODE_RING = 605;
+     private static final int KEYCODE_SLIDER_TOP = 601;
+     private static final int KEYCODE_SLIDER_MIDDLE = 602;
+     private static final int KEYCODE_SLIDER_BOTTOM = 603;
 
     private static final int[] sSupportedGestures = new int[]{
         GESTURE_CIRCLE_SCANCODE,
@@ -72,13 +72,17 @@ public class KeyHandler implements DeviceKeyHandler {
         GESTURE_V_UP_SCANCODE,
         GESTURE_LTR_SCANCODE,
         GESTURE_GTR_SCANCODE,
-        MODE_TOTAL_SILENCE,
-        MODE_ALARMS_ONLY,
-        MODE_PRIORITY_ONLY,
-        MODE_NONE,
-        MODE_VIBRATE,
-        MODE_RING
+        KEYCODE_SLIDER_TOP,
+        KEYCODE_SLIDER_MIDDLE,
+        KEYCODE_SLIDER_BOTTOM
     };
+
+
+    private static final int[] sHandledGestures = new int[]{
+        KEYCODE_SLIDER_TOP,
+        KEYCODE_SLIDER_MIDDLE,
+        KEYCODE_SLIDER_BOTTOM
+      };
 
     private final Context mContext;
     private final AudioManager mAudioManager;
@@ -90,6 +94,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private Sensor mProximitySensor;
     private Vibrator mVibrator;
     WakeLock mProximityWakeLock;
+    private WakeLock mGestureWakeLock;
 
     public KeyHandler(Context context) {
         mContext = context;
@@ -101,6 +106,9 @@ public class KeyHandler implements DeviceKeyHandler {
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "ProximityWakeLock");
+
+        mGestureWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "GestureWakeLock");
 
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (mVibrator == null || !mVibrator.hasVibrator()) {
@@ -156,28 +164,7 @@ public class KeyHandler implements DeviceKeyHandler {
                         ActionConstants.ACTION_MEDIA_NEXT);
                         doHapticFeedback();
                 break;
-            case MODE_TOTAL_SILENCE:
-		mNoMan.setZenMode(Global.ZEN_MODE_NO_INTERRUPTIONS, null, TAG);
-                break;
-            case MODE_ALARMS_ONLY:
-		mNoMan.setZenMode(Global.ZEN_MODE_ALARMS, null, TAG);
-                break;
-            case MODE_PRIORITY_ONLY:
-		mNoMan.setZenMode(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
-                break;
-            case MODE_NONE:
-            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
-		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
-                break;
-            case MODE_VIBRATE:
-            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
-		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
-                break;
-            case MODE_RING:
-            	mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
-		mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
-                break;
-            }
+    }
 
             if (action == null || action != null && action.equals(ActionConstants.ACTION_NULL)) {
                 return;
@@ -209,17 +196,36 @@ public class KeyHandler implements DeviceKeyHandler {
         }
         int scanCode = event.getScanCode();
         boolean isKeySupported = ArrayUtils.contains(sSupportedGestures, scanCode);
+        boolean isSliderModeSupported = ArrayUtils.contains(sHandledGestures, event.getScanCode());
         if (isKeySupported && !mEventHandler.hasMessages(GESTURE_REQUEST)) {
-            Message msg = getMessageForKeyEvent(event);
-            if (scanCode < MODE_TOTAL_SILENCE && mProximitySensor != null) {
+            Message msg =  getMessageForKeyEvent(event);
+            if (scanCode < KEYCODE_SLIDER_TOP && mProximitySensor != null) {
                 mEventHandler.sendMessageDelayed(msg, 200);
                 processEvent(event);
-            } else {
-                mEventHandler.sendMessage(msg);
-            }
-        }
-        return isKeySupported;
+            } else if (isSliderModeSupported) {
+            if (DEBUG) Log.i(TAG, "scanCode=" + event.getScanCode());
+           switch(event.getScanCode()) {
+            case KEYCODE_SLIDER_TOP:
+            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_TOP");
+            doHandleSliderAction(0);
+            return true;
+        case KEYCODE_SLIDER_MIDDLE:
+            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_MIDDLE");
+            doHandleSliderAction(1);
+            return true;
+        case KEYCODE_SLIDER_BOTTOM:
+            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_BOTTOM");
+            doHandleSliderAction(2);
+            return true;
     }
+            mEventHandler.removeMessages(GESTURE_REQUEST);
+            mEventHandler.sendMessage(msg);
+        } else {
+            mEventHandler.sendMessage(msg);
+         }
+     }
+     return isKeySupported;
+  }
 
     private Message getMessageForKeyEvent(KeyEvent keyEvent) {
         Message msg = mEventHandler.obtainMessage(GESTURE_REQUEST);
@@ -251,5 +257,40 @@ public class KeyHandler implements DeviceKeyHandler {
 
         }, mProximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
+
+     private int getSliderAction(int position) {
+        String value = Settings.System.getStringForUser(mContext.getContentResolver(),
+                    DeviceSettings.BUTTON_EXTRA_KEY_MAPPING,
+                    UserHandle.USER_CURRENT);
+        final String defaultValue = DeviceSettings.SLIDER_DEFAULT_VALUE;
+        if (value == null) {
+            value = defaultValue;
+        } else if (value.indexOf(",") == -1) {
+            value = defaultValue;
+        }
+        try {
+            String[] parts = value.split(",");
+            return Integer.valueOf(parts[position]);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    private void doHandleSliderAction(int position) {
+        int action = getSliderAction(position);
+        if ( action == 0) {
+            mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+            mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+        } else if (action == 1) {
+            mNoMan.setZenMode(Global.ZEN_MODE_OFF_ONLY, null, TAG);
+            mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
+        } else if (action == 2) {
+            mNoMan.setZenMode(Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
+        } else if (action == 3) {
+            mNoMan.setZenMode(Global.ZEN_MODE_ALARMS, null, TAG);
+        } else if (action == 4) {
+            mNoMan.setZenMode(Global.ZEN_MODE_NO_INTERRUPTIONS, null, TAG);
+        }
+   }
 
 }
