@@ -64,7 +64,6 @@ public class KeyHandler implements DeviceKeyHandler {
      private static final int KEYCODE_SLIDER_TOP = 601;
      private static final int KEYCODE_SLIDER_MIDDLE = 602;
      private static final int KEYCODE_SLIDER_BOTTOM = 603;
-
     private static final int[] sSupportedGestures = new int[]{
         GESTURE_CIRCLE_SCANCODE,
         GESTURE_SWIPE_DOWN_SCANCODE,
@@ -95,6 +94,8 @@ public class KeyHandler implements DeviceKeyHandler {
     private Vibrator mVibrator;
     WakeLock mProximityWakeLock;
     private WakeLock mGestureWakeLock;
+    private Handler mHandler;
+    private int mCurrentPosition;
 
     public KeyHandler(Context context) {
         mContext = context;
@@ -106,7 +107,7 @@ public class KeyHandler implements DeviceKeyHandler {
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mProximityWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "ProximityWakeLock");
-
+        mHandler = new Handler(); 
         mGestureWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "GestureWakeLock");
 
@@ -205,17 +206,38 @@ public class KeyHandler implements DeviceKeyHandler {
             } else if (isSliderModeSupported) {
             if (DEBUG) Log.i(TAG, "scanCode=" + event.getScanCode());
            switch(event.getScanCode()) {
-            case KEYCODE_SLIDER_TOP:
-            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_TOP");
+       case KEYCODE_SLIDER_TOP:
+            mCurrentPosition = KEYCODE_SLIDER_TOP; 
+            Log.i(TAG, "KEYCODE_SLIDER_TOP");
+            mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCurrentPosition != KEYCODE_SLIDER_TOP) return;
             doHandleSliderAction(0);
+                    }
+                }, 250);
             return true;
         case KEYCODE_SLIDER_MIDDLE:
-            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_MIDDLE");
+            mCurrentPosition = KEYCODE_SLIDER_MIDDLE; 
+           Log.i(TAG, "KEYCODE_SLIDER_MIDDLE");
+            mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCurrentPosition != KEYCODE_SLIDER_MIDDLE) return;
             doHandleSliderAction(1);
+                    }
+                }, 50);
             return true;
         case KEYCODE_SLIDER_BOTTOM:
-            if (DEBUG) Log.i(TAG, "KEYCODE_SLIDER_BOTTOM");
+            mCurrentPosition = KEYCODE_SLIDER_BOTTOM; 
+           Log.i(TAG, "KEYCODE_SLIDER_BOTTOM");
+            mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCurrentPosition != KEYCODE_SLIDER_BOTTOM) return;
             doHandleSliderAction(2);
+                    }
+                }, 50);
             return true;
     }
             mEventHandler.removeMessages(GESTURE_REQUEST);
