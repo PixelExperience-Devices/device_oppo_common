@@ -23,14 +23,14 @@
     <string name="reset">Reset</string>
     <string name="reset_message">Reset all entries to default?</string>
 
-    <string name="screen_off_gesture_title">Screen off gestures</string>
+    <string name="screen_off_gesture_title">Gestures</string>
     <string name="group_applications">Applications</string>
     <string name="select_custom_app_title">Select custom application</string>
     <string name="gestures_dashboard_summary">Gestures specific to OnePlus devices</string>
     <string name="device_settings_dashboard_summary">Oneplus Buttons and Panel Settings</string>
     <string name="enable_gestures_title">Enable gestures</string>
     <string name="enable_gestures_summary">Enable screen off gestures</string>
-    <string name="gestures_title">Gestures</string>
+    <string name="gestures_title">Screen off gestures</string>
     <string name="gesture_arrow_down_title">Arrow down</string>
     <string name="gesture_arrow_left_title">Arrow left</string>
     <string name="gesture_arrow_right_title">Arrow right</string>
