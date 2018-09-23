@@ -53,8 +53,10 @@
     <string name="vibrate">Vibrate</string>
     <string name="ring">Ring</string>
 
-
-
+    <!-- Ambient display -->
+    <string name="ambient_display">Ambient Display</string>
+    <string name="ambient_trigger">Ambient Display Triggers</string>
+    <string name="ambient_trigger_summary">Configure different methods to trigger ambient display</string>
 
     <string name="slider_mode_off">Off</string>
     <string name="slider_mode_vibrate">Vibrate</string>
