@@ -77,4 +77,17 @@
  
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/screenoff_gesture_preference">
+
+            <Preference
+                android:key="gesture_pref"
+                android:title="@string/screen_off_gesture_title"
+                android:summary="@string/gestures_dashboard_summary">
+                <intent
+                    android:targetPackage="com.slim.device"
+		    android:targetClass="com.slim.device.settings.ScreenOffGestureSettings"/>
+	    </Preference>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
