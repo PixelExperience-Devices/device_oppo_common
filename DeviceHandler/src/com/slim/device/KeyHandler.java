@@ -215,7 +215,7 @@ public class KeyHandler implements DeviceKeyHandler {
                         if (mCurrentPosition != KEYCODE_SLIDER_TOP) return;
             doHandleSliderAction(0);
                     }
-                }, 250);
+                }, 50);
             return event;
         case KEYCODE_SLIDER_MIDDLE:
             mCurrentPosition = KEYCODE_SLIDER_MIDDLE; 
