@@ -26,26 +26,26 @@
 
 
 <PreferenceCategory
-        android:title="@string/notification_slider">
+        android:title="@string/category_slider">
 
         <ListPreference
             android:key="slider_top"
             android:dialogTitle="@string/action"
-            android:title="@string/top_position"
+            android:title="@string/slider_mode_title_top"
             android:entries="@array/notification_slider_action_entries"
             android:entryValues="@array/notification_slider_action_entry_values" />
 
         <ListPreference
             android:key="slider_middle"
             android:dialogTitle="@string/action"
-            android:title="@string/middle_position"
+            android:title="@string/slider_mode_title_center"
             android:entries="@array/notification_slider_action_entries"
             android:entryValues="@array/notification_slider_action_entry_values" />
 
         <ListPreference
             android:key="slider_bottom"
             android:dialogTitle="@string/action"
-            android:title="@string/bottom_position"
+            android:title="@string/slider_mode_title_bottom"
             android:entries="@array/notification_slider_action_entries"
             android:entryValues="@array/notification_slider_action_entry_values" />
 
@@ -64,25 +64,11 @@
             android:title="@string/dci_mode_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/ambient_display">
- 
-            <Preference
-                android:key="ambient_trigger"
-                android:title="@string/ambient_trigger"
-                android:summary="@string/ambient_trigger_summary">
-                <intent
-                    android:targetPackage="com.custom.ambient.display"
-    	    	    android:targetClass="com.custom.ambient.display.DozeSettings" />
-            </Preference>
- 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/screenoff_gesture_preference">
+    <PreferenceCategory android:title="@string/offscreen_gesture_title">
 
             <Preference
                 android:key="gesture_pref"
-                android:title="@string/screen_off_gesture_title"
-                android:summary="@string/gestures_dashboard_summary">
+                android:title="@string/offscreen_gesture_title">
                 <intent
                     android:targetPackage="com.slim.device"
 		    android:targetClass="com.slim.device.settings.ScreenOffGestureSettings"/>

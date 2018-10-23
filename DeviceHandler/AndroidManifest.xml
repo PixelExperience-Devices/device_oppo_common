@@ -12,48 +12,40 @@
     <uses-sdk
             android:targetSdkVersion="27" />
 
-    <application
-            android:icon="@android:drawable/sym_def_app_icon"
-            android:label="DeviceHandler"
-            >
+    <application android:label="@string/advanced_settings">
 
         <!-- stub to ensure its loaded - DO NOT REMOVE -->
         <activity android:name=".KeyHandler" />
 
         <activity
             android:name=".settings.ScreenOffGestureSettings"
-            android:label="@string/screen_off_gesture_title"
+            android:label="@string/offscreen_gesture_title"
             android:theme="@style/DeviceHandlerTheme">
-          <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
-          </intent-filter>
-         </activity>
+        </activity>
 
          <activity
             android:name=".settings.DeviceSettingsActivity"
             android:theme="@style/AppTheme"
-            android:label="@string/device_settings"
-            android:launchMode="singleTask" >  
+            android:label="@string/advanced_settings"
+            android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
             </intent-filter>
             <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_settings_additional_buttons" />
-            <meta-data
                 android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.homepage" />
-            <meta-data android:name="com.android.settings.summary"
-                android:resource="@string/device_settings_dashboard_summary" />
+                android:value="com.android.settings.category.ia.system" />
+            <meta-data
+                android:name="com.android.settings.icon"
+                android:resource="@drawable/ic_device_parts" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/advanced_settings_summary" />
         </activity>
 
         <activity-alias
             android:name=".settings.DeviceSettings"
-            android:label="@string/device_settings"
-            android:targetActivity=".settings.DeviceSettingsActivity" >
-            <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
-            </intent-filter>
+            android:label="@string/advanced_settings"
+            android:targetActivity=".settings.DeviceSettingsActivity">
         </activity-alias>
 
         <receiver android:name=".BootReceiver" >

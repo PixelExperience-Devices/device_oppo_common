@@ -100,7 +100,7 @@ public class ShortcutPickerHelper {
             Intent pickIntent = new Intent(Intent.ACTION_PICK_ACTIVITY);
             pickIntent.putExtra(Intent.EXTRA_INTENT, new Intent(Intent.ACTION_CREATE_SHORTCUT));
             pickIntent.putExtra(Intent.EXTRA_TITLE, mParent.getText(
-                    R.string.select_custom_app_title));
+                    R.string.choose_app));
             pickIntent.putExtras(bundle);
             startFragmentOrActivity(pickIntent, REQUEST_PICK_SHORTCUT);
         }

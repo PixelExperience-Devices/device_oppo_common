@@ -191,22 +191,22 @@ public class ScreenOffGesture extends PreferenceFragment implements
         int dialogTitle = 0;
         if (preference == mGestureCircle) {
             settingsKey = PREF_GESTURE_CIRCLE;
-            dialogTitle = R.string.gesture_circle_title;
+            dialogTitle = R.string.category_circle_gesture;
         } else if (preference == mGestureDoubleSwipe) {
             settingsKey = PREF_GESTURE_DOUBLE_SWIPE;
-            dialogTitle = R.string.gesture_double_swipe_title;
+            dialogTitle = R.string.category_double_swipe_gesture;
         } else if (preference == mGestureArrowUp) {
             settingsKey = PREF_GESTURE_ARROW_UP;
-            dialogTitle = R.string.gesture_arrow_up_title;
+            dialogTitle = R.string.category_up_arrow_gesture;
         } else if (preference == mGestureArrowDown) {
             settingsKey = PREF_GESTURE_ARROW_DOWN;
-            dialogTitle = R.string.gesture_arrow_down_title;
+            dialogTitle = R.string.category_down_arrow_gesture;
         } else if (preference == mGestureArrowLeft) {
             settingsKey = PREF_GESTURE_ARROW_LEFT;
-            dialogTitle = R.string.gesture_arrow_left_title;
+            dialogTitle = R.string.category_left_arrow_gesture;
         } else if (preference == mGestureArrowRight) {
             settingsKey = PREF_GESTURE_ARROW_RIGHT;
-            dialogTitle = R.string.gesture_arrow_right_title;
+            dialogTitle = R.string.category_right_arrow_gesture;
         }
         if (settingsKey != null) {
             showDialogInner(DLG_SHOW_ACTION_DIALOG, settingsKey, dialogTitle);

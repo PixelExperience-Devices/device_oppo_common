@@ -20,46 +20,45 @@
         <SwitchPreference
             android:key="enable_gestures"
             android:title="@string/enable_gestures_title"
-            android:persistent="false"
-            android:summary="@string/enable_gestures_summary" />
+            android:persistent="false"/>
 
         <PreferenceCategory
             android:key="gestures"
-            android:title="@string/gestures_title" >
+            android:title="@string/offscreen_gesture_title" >
 
             <Preference
                 android:key="gesture_arrow_down"
-                android:title="@string/gesture_arrow_down_title"
+                android:title="@string/category_down_arrow_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 
             <Preference
                 android:key="gesture_arrow_left"
-                android:title="@string/gesture_arrow_left_title"
+                android:title="@string/category_left_arrow_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 
             <Preference
                 android:key="gesture_arrow_right"
-                android:title="@string/gesture_arrow_right_title"
+                android:title="@string/category_right_arrow_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 
             <Preference
                 android:key="gesture_arrow_up"
-                android:title="@string/gesture_arrow_up_title"
+                android:title="@string/category_up_arrow_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 
             <Preference
                 android:key="gesture_circle"
-                android:title="@string/gesture_circle_title"
+                android:title="@string/category_circle_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 
             <Preference
                 android:key="gesture_double_swipe"
-                android:title="@string/gesture_double_swipe_title"
+                android:title="@string/category_double_swipe_gesture"
                 android:persistent="false"
                 android:dependency="enable_gestures" />
 

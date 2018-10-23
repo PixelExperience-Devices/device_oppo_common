@@ -1,0 +1,7 @@
+[
+  {
+    "repository" : "packages_resources_OneplusGestures",
+    "target_path": "packages/resources/OneplusGestures",
+    "remote"     : "pixel"
+  }
+]
